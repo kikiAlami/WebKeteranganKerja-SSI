@@ -1,4 +1,4 @@
-# Web Form Request Surat Paklaring PT SSI & JST 2026
+# Web Form Request Surat Paklaring PT SSI & JST
 
 Pengganti Google Form dengan tampilan kustom. Data masuk ke Google Sheets, file upload masuk ke Google Drive, melalui Google Apps Script (GAS).
 
@@ -10,8 +10,8 @@ Pengganti Google Form dengan tampilan kustom. Data masuk ke Google Sheets, file 
 1. **Data diri**: nama, NPP, NIK (16 digit), email, tempat/tanggal lahir.
 2. **Pekerjaan**: jabatan terakhir (dropdown, ada opsi "Yang lain"), lokasi, dan riwayat kerja (dropdown).
    - `SSI` : hanya tanggal masuk & keluar SSI.
-   - `JST` : **hanya tanggal masuk & keluar JST**.
-   - `SSI & JST` : keempat tanggal.
+   - `SSI & JST` : tanggal masuk & keluar SSI dan JST.
+   - Pilihan riwayat hanya `SSI` dan `SSI & JST` (opsi JST saja sudah dihapus).
 3. **Serah terima aset & resign** (satu halaman):
    - Aset `Sudah` maka kolom upload berkas aset muncul (wajib). `Belum` maka kolom tidak muncul dan tidak dikirim.
    - Persetujuan resign, upload nota intern/surat resign (PDF, maks 10 MB), dan kebutuhan paklaring (dropdown, ada opsi "Yang lain").
@@ -23,12 +23,12 @@ Input pada bagian yang tersembunyi otomatis dinonaktifkan, sehingga tidak divali
 ## Cara deploy
 ### 1. Siapkan Sheet dan folder
 1. Buat Google Spreadsheet baru (mis. "Paklaring 2026").
-2. Buat folder Drive untuk berkas upload, lalu salin ID-nya dari URL (`drive.google.com/drive/folders/<ID_FOLDER>`).
+2. Folder upload: tidak perlu dibuat manual. Semua berkas (nota resign dan serah terima aset) otomatis masuk ke **satu folder** bernama `Upload Paklaring SSI & JST` di Drive anda (nama bisa diubah di `CONFIG.FOLDER_NAME`). Jika ingin memakai folder yang sudah ada, isi `CONFIG.FOLDER_ID` dengan ID dari URL (`drive.google.com/drive/folders/<ID_FOLDER>`).
 
 ### 2. Pasang GAS
 1. Di Spreadsheet buka **Extensions > Apps Script**.
 2. Hapus isi default, tempel seluruh isi `Code.gs`.
-3. Isi `CONFIG.FOLDER_ID` dengan ID folder. `SHEET_ID` boleh kosong karena script dibuat dari dalam Sheet.
+3. `FOLDER_ID` dan `SHEET_ID` boleh dikosongkan. Disarankan menjalankan fungsi `setupFolder` sekali dari menu **Run** agar folder terbuat dan izin Drive disetujui. URL folder tampil di Execution log.
 4. Klik **Deploy > New deployment > Web app**:
    - Execute as: **Me**
    - Who has access: **Anyone**
@@ -60,3 +60,6 @@ Warna mengikuti tema Google Form asli (coklat-emas `#91692a`, latar krem). Untuk
 
 ## Catatan perubahan kolom
 Kolom "No. referensi" sudah dihapus dari Sheet. Jika Sheet `Respon` sudah terlanjur dibuat dengan header lama, hapus sheet tersebut (atau kolom B) agar header dibuat ulang otomatis saat respon berikutnya masuk.
+
+## Tata letak (versi terbaru)
+Tampilan mengikuti artifact referensi: banner foto di atas, kartu pratinjau yang terisi otomatis saat form diisi (di HP kartu berada di bawah form), stepper 5 langkah, progres "X dari Y wajib terisi", kolom floating label berikon dengan centang, pesan error per kolom, upload dengan pratinjau dan tombol Hapus, serta tombol Kosongkan formulir. Isi form dan logika kondisional tidak berubah. Warna memakai tema coklat-emas lama; ubah variabel `--green`, `--green-d`, `--bg`, `--field` di `:root` untuk mengganti.
